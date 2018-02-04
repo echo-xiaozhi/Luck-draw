@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>抽奖系统</title>
+
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <style type="text/css">
+        #bigDiv {
+            width: 1080px;
+            margin: 0px auto; /*div网页居中*/
+            background-color: #494949;
+            color: #FFFFFF;
+        }
+
+        h1 {
+            text-align: center; /*文本居中*/
+            padding-top: 10px;
+        }
+
+        #first, #second, #third {
+            width: 360px;
+            height: 360px;
+            font-size: 150px;
+            line-height: 360px;
+            text-align: center;
+            float: left; /*让三个盒子左浮动*/
+        }
+
+        #first {
+            background-color: red;
+            opacity: 0.8;
+        }
+
+        #second {
+            background-color: green;
+            opacity: 0.8;
+        }
+
+        #third {
+            background-color: blue;
+            opacity: 0.8;
+        }
+
+        input {
+            font-size: 30px;
+            font-weight: 900;
+        }
+
+        #start {
+            margin-left: 40%;
+            margin-right: 5%;
+        }a{color:blue;}
+    </style>
+
+</head>
+<body>
+<div id="bigDiv">
+    <h1>抽奖活动  <span style="color: red;">红:楼层 </span> <span style="color: green;">绿:桌号</span>  <span style="color: blue;">蓝:人号</span>  </h1>
+    <div id="first"></div>
+    <div id="second"></div>
+    <div id="third"></div>
+    <input type="button" value="楼层或区层开始" id="start_l">
+    <input type="button" value="桌位开始" id="start_z">
+    <input type="button" value="人号开始" id="start_r">
+    <input type="button" value="停止" id="stop" disabled="disabled">
+</div>
+<script>
+    var ran = 0;
+    var range = 0;
+    var myNumber;
+    var nei_l = 2; //内定楼层
+    var nei_z = 5; //内定桌号
+    var nei_r = 3; //内定人号
+
+    /*将产生随机数的方法进行封装*/
+    function sjs(range) {
+        ran = Math.random() * range;//[0,range)的随机数
+        var result = parseInt(ran);//将数字转换成整数
+        if (result == 0){
+            return 1;
+        }else {
+            return result;
+        }
+    }
+    /*对显示随机数的方法进行封装*/
+    function showRandomNum1() {
+        var figure = sjs(range_l);
+        $("#first").html(figure);
+    }
+    /*对显示随机数的方法进行封装*/
+    function showRandomNum2() {
+        var figure2 = sjs(range_z);
+        $("#second").html(figure2);
+    }
+    /*对显示随机数的方法进行封装*/
+    function showRandomNum3() {
+        var figure3 = sjs(range_r);
+        $("#third").html(figure3);
+    }
+    $(function () {
+        /*点击开始按钮,产生的事件*/
+        $("#start_l").click(function () {
+
+            range_l = prompt("请输入楼层数范围：", "5");
+
+            if (range_l == null)
+            {
+                return;
+            }
+
+            if (range_l == 0)
+            {
+                return;
+            }
+
+            if (isNaN(range_l))
+            {
+                alert("请输入数字");
+                return ;
+            }
+            /*将开始标签禁用，停止标签启用*/
+            $("#start_l")[0].disabled = true;
+            $("#stop")[0].disabled = false;
+            if (range_l > 9999 || range_l<-999)
+            {
+                // by 何问起
+                $("#bigDiv div").css("font-size", "60px");
+                //return;
+            }
+            myNumber = setInterval(showRandomNum1, 50);//多长时间运行一次，单位毫秒
+        });
+        /*点击开始按钮,产生的事件*/
+        $("#start_z").click(function () {
+
+            range_z = prompt("请输入楼层总桌数范围：", "24");
+
+            if (range_z == null)
+            {
+                return;
+            }
+
+            if (range_z == 0)
+            {
+                return;
+            }
+
+            if (isNaN(range_z))
+            {
+                alert("请输入数字");
+                return ;
+            }
+            /*将开始标签禁用，停止标签启用*/
+            $("#start_z")[0].disabled = true;
+            $("#stop")[0].disabled = false;
+            if (range_z > 9999 || range_z<-999)
+            {
+                // by 何问起
+                $("#bigDiv div").css("font-size", "60px");
+                //return;
+            }
+            myNumber = setInterval(showRandomNum2, 50);//多长时间运行一次，单位毫秒
+        });
+        /*点击开始按钮,产生的事件*/
+        $("#start_r").click(function () {
+
+            range_r = prompt("请输入每桌人数范围：", "8");
+
+            if (range_r == null)
+            {
+                return;
+            }
+
+            if (range_r == 0)
+            {
+                return;
+            }
+
+            if (isNaN(range_r))
+            {
+                alert("请输入数字");
+                return ;
+            }
+            /*将开始标签禁用，停止标签启用*/
+            $("#start_r")[0].disabled = true;
+            $("#stop")[0].disabled = false;
+            if (range_r > 9999 || range_r<-999)
+            {
+                // by 何问起
+                $("#bigDiv div").css("font-size", "60px");
+                //return;
+            }
+            myNumber = setInterval(showRandomNum3, 50);//多长时间运行一次，单位毫秒
+        });
+        /*点击结束按钮*/
+        $("#stop").click(function () {
+            /*将开始标签启用，停止标签禁用*/
+            $("#start_l")[0].disabled = false;
+            $("#start_z")[0].disabled = false;
+            $("#start_r")[0].disabled = false;
+            $("#stop")[0].disabled = true;
+            clearInterval(myNumber);
+        });
+    });
+</script>
+</body>
+</html>

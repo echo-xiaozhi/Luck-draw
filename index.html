@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<style>
+		html,body{
+			padding: 0;
+			margin: 0;
+		}
+		body{
+			width: 100%;
+			height: 100%;
+			background: url(drow.jpg) no-repeat center top;
+			background-size:cover;
+			-webkit-background-size: cover;
+			-moz-background-size:cover;
+			-o-background-size:cover;	
+		}
+		.body-white{
+			width: 500px;
+			height: 200px;
+			background: #ffffff;
+			border-radius: 10px;
+			-webkit-border-radius: 10px;
+			-moz-border-radius: 10px;
+			-o-border-radius: 10px;
+			margin: 500px auto 0;
+            font-size: 134px;
+            text-align: center;
+            font-weight: bold;
+            letter-spacing: 70px;
+            text-indent: 61px;
+		}
+        input{
+            display: none;
+        }
+	</style>
+	<title>抽奖</title>
+    <script src="jquery-3.3.1.min.js"></script>
+</head>
+<body>
+	<div class="body-white" id="first">000</div>
+    <script>
+        var ran = 0;
+        var range = 0;
+        /*将产生随机数的方法进行封装*/
+        function sjs(range) {
+            ran = Math.random() * range;//[0,range)的随机数
+            var result = parseInt(ran);//将数字转换成整数
+            if (result == 0){
+                return 1;
+            }else {
+                return result;
+            }
+        }
+        /*对显示随机数的方法进行封装*/
+        function showRandomNum() {
+            var figure = sjs(range);
+            $("#first").html(figure);
+        }
+        let a = true;
+        let timeout = null;
+        $(function () {
+            // 绑定键盘按下事件
+            $(document).keypress(function(e) {
+                // 回车键事件
+                if(e.which == 13) {
+                    if (a) {
+                        range = 500;
+
+                        /*将开始标签禁用，停止标签启用*/
+                        $("#start")[0].disabled = true;
+                        $("#stop")[0].disabled = false;
+
+                        timeout = setInterval(showRandomNum, 30);//多长时间运行一次，单位毫秒
+                    }else{
+                        clearInterval(timeout);
+					}
+					a = !a;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
